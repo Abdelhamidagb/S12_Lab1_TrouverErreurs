@@ -69,8 +69,6 @@ namespace Mission.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
-            // Si la validation échoue, on recharge la liste pour éviter une erreur d'affichage
             produit_VM.CategorieList = _context.Categories.OrderBy(c => c.Titre).Select(i => new SelectListItem
             {
                 Text = i.Titre,
@@ -130,7 +128,6 @@ namespace Mission.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Si la validation échoue, on doit aussi recharger la liste ici
             produit_VM.CategorieList = _context.Categories.OrderBy(c => c.Titre).Select(i => new SelectListItem
             {
                 Text = i.Titre,
