@@ -59,8 +59,6 @@ namespace Mission.Controllers
         }
 
         // POST: Produits/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Produit_VM produit_VM)
@@ -71,13 +69,14 @@ namespace Mission.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            produit_VM.CategorieList = _context.Categories.OrderBy(c => c.Titre).Select(i => new SelectListItem 
+
+            // Si la validation échoue, on recharge la liste pour éviter une erreur d'affichage
+            produit_VM.CategorieList = _context.Categories.OrderBy(c => c.Titre).Select(i => new SelectListItem
             {
                 Text = i.Titre,
                 Value = i.Id.ToString()
-            })
-            ;
-         
+            });
+
             return View(produit_VM);
         }
 
@@ -88,24 +87,24 @@ namespace Mission.Controllers
             {
                 return NotFound();
             }
+
             Produit_VM produit_VM = new Produit_VM();
             produit_VM.CategorieList = _context.Categories.OrderBy(c => c.Titre).Select(i => new SelectListItem
             {
                 Text = i.Titre,
                 Value = i.Id.ToString()
             });
+
             produit_VM.Produit = await _context.Produits.FirstOrDefaultAsync(u => u.Id == id);
             if (produit_VM.Produit == null)
             {
                 return NotFound();
             }
-           
+
             return View(produit_VM);
         }
 
         // POST: Produits/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Produit_VM produit_VM)
@@ -130,7 +129,14 @@ namespace Mission.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            
+
+            // Si la validation échoue, on doit aussi recharger la liste ici
+            produit_VM.CategorieList = _context.Categories.OrderBy(c => c.Titre).Select(i => new SelectListItem
+            {
+                Text = i.Titre,
+                Value = i.Id.ToString()
+            });
+
             return View(produit_VM);
         }
 
@@ -174,3 +180,4 @@ namespace Mission.Controllers
         }
     }
 }
+

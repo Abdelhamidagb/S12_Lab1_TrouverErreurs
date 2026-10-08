@@ -13,37 +13,47 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Produit.Id" />
+
             <div class="form-group">
                 <label asp-for="Produit.Description" class="control-label"></label>
                 <input asp-for="Produit.Description" class="form-control" />
                 <span asp-validation-for="Produit.Description" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Produit.DateCreation" class="control-label"></label>
                 <input asp-for="Produit.DateCreation" class="form-control" />
                 <span asp-validation-for="Produit.DateCreation" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Produit.PrixVente" class="control-label"></label>
                 <input asp-for="Produit.PrixVente" class="form-control" />
                 <span asp-validation-for="Produit.PrixVente" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Produit.CategorieId" class="control-label"></label>
-                <select asp-for="Produit.CategorieId" class="form-control" asp-items="ViewBag.CategorieId"></select>
+                <!-- Remplacement de ViewBag par Model.CategorieList -->
+                <select asp-for="Produit.CategorieId" class="form-control" asp-items="Model.CategorieList"></select>
                 <span asp-validation-for="Produit.CategorieId" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mt-3">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
+<div class="mt-3">
     <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
+
+
